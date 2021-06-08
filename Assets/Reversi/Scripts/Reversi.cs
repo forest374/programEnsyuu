@@ -12,6 +12,9 @@ public class Reversi : MonoBehaviour
     int size = 8;
     TileState enemyState = TileState.Black;
 
+    public Tile[,] Tiles { get => tiles; }
+    int reverseCount = 0;
+
     private void Awake()
     {
         tiles = new Tile[size, size];
@@ -38,6 +41,7 @@ public class Reversi : MonoBehaviour
                 {
                     tiles[x, y].TileState = TileState.Black;
                 }
+                tiles[x, y].Count = 0;
             }
         }
     }
@@ -148,6 +152,7 @@ public class Reversi : MonoBehaviour
         foreach (var item in tiles)
         {
             item.Highlight.gameObject.SetActive(false);
+            item.Count = 0;
         }
 
         if (turnState == TileState.Black)
@@ -176,6 +181,7 @@ public class Reversi : MonoBehaviour
                     {
                         count++;
                         tiles[x, y].Highlight.gameObject.SetActive(true);
+                        tiles[x, y].Count = reverseCount;
                     }
                 }
             }
@@ -198,6 +204,7 @@ public class Reversi : MonoBehaviour
     /// <returns>bool</returns>
     bool Check(TileState state, int tilesX, int tilesY)
     {
+        reverseCount = 0;
         bool check = false;
         for (int y = -1; y < 2; y++)
         {
@@ -214,6 +221,7 @@ public class Reversi : MonoBehaviour
                     check = Check(state, CheckX, CheckY, x, y);
                     if (check)
                     {
+                        reverseCount++;
                         return check;
                     }
                 }
@@ -239,19 +247,23 @@ public class Reversi : MonoBehaviour
         if (CheckX < 0 || CheckX >= size ||
             CheckY < 0 || CheckY >= size)
         {
+            reverseCount = 0;
             return false;
         }
         else if (tiles[CheckX, CheckY].TileState == state)// 敵の色と同じなら次も調べる
         {
             bool check = Check(state, CheckX, CheckY, x, y);
+            reverseCount++;
             return check;
         }
         else if (tiles[CheckX, CheckY].TileState == TileState.None)
         {
+            reverseCount = 0;
             return false;
         }
         else
         {
+            reverseCount++;
             return true;
         }
     }
