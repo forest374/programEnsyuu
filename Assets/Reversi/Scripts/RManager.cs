@@ -19,7 +19,7 @@ public class RManager : MonoBehaviour
     TileState myColor = TileState.Black;
     PointerEventData pointer;
 
-    int lastTurnPutNum = 0;
+    int lastTurnPutNum = 1;
     void Start()
     {
         pointer = new PointerEventData(EventSystem.current);
@@ -155,6 +155,11 @@ public class RManager : MonoBehaviour
         {
             myColor = TileState.Black;
         }
+    }
+
+    public void PutNumCount(int putNum)
+    {
+        lastTurnPutNum = putNum;
     }
 
     public void TurnPass(int putNum)

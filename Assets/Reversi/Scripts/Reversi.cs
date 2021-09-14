@@ -11,7 +11,6 @@ public class Reversi : MonoBehaviour
     Tile[,] tiles;
     int size = 8;
     TileState enemyState = TileState.Black;
-
     public Tile[,] Tiles { get => tiles; }
     int reverseCount = 0;
 
@@ -191,6 +190,10 @@ public class Reversi : MonoBehaviour
         {
             Debug.Log("pass");
             manager.TurnPass(count);
+        }
+        else
+        {
+            manager.PutNumCount(count);
         }
     }
 
